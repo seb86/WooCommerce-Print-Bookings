@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: WooCommerce Print Bookings
- * Description: Allows you to select a date, product and category to print out a table of the bookings and who booked.
+ * Description: Select a bookable product, product category and the date and time of the bookings you wish to print out summarized version of in a printable table.
  * Version:     1.0.0
  * Author:      Sébastien Dumont
  * Author URI:  https://sebastiendumont.com
