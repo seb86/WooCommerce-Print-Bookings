@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Print Bookings 1.0.0\n"
 "Report-Msgid-Bugs-To: https://sebastiendumont.com/contact-me/\n"
-"POT-Creation-Date: 2017-10-25 03:43+0200\n"
+"POT-Creation-Date: 2017-10-25 15:40+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,119 +29,114 @@ msgstr ""
 
 #: includes/admin/class-wc-print-bookings-admin.php:70
 #: includes/admin/class-wc-print-bookings-admin.php:109
-#: includes/admin/views/html-print-bookings-backup.php:126
-#: includes/admin/views/html-print-bookings-backup.php:128
-#: includes/admin/views/html-print-bookings.php:79
-#: includes/admin/views/html-print-bookings.php:81
-#: includes/admin/views/html-select-bookings.php:23
+#: includes/admin/views/html-print-bookings.php:89
+#: includes/admin/views/html-print-bookings.php:91
+#: includes/admin/views/html-select-bookings.php:16
 msgid "Print Bookings"
 msgstr ""
 
 #: includes/admin/class-wc-print-bookings-page.php:37
-msgid "Error - please try again"
+msgid ""
+"Error - please <a href=\"javascript:history.back()\">go back</a> and "
+"try again."
 msgstr ""
 
 #: includes/admin/class-wc-print-bookings-page.php:44
-msgid "Error - Please choose a bookable product."
+msgid ""
+"Error - Please <a href=\"javascript:history.back()\">go back</a> and "
+"choose a bookable product."
 msgstr ""
 
 #: includes/admin/class-wc-print-bookings-page.php:52
-msgid "Error - Please select a start date for the bookings."
+#, php-format
+msgid ""
+"The bookable product you have selected does not have category: <strong>"
+"%s</strong>. Please <a href=\"javascript:history.back()\">go back</a> "
+"and select another."
 msgstr ""
 
-#: includes/admin/class-wc-print-bookings-page.php:70
+#: includes/admin/class-wc-print-bookings-page.php:58
+msgid ""
+"Error - Please <a href=\"javascript:history.back()\">go back</a> and "
+"select a start date for the bookings."
+msgstr ""
+
+#: includes/admin/class-wc-print-bookings-page.php:76
 #, php-format
 msgid ""
 "Error - Oh dear, you refreshed the page. Please <a href=\"%s\">go "
 "back</a> and re-select the bookings to print."
 msgstr ""
 
-#: includes/admin/views/html-print-bookings-backup.php:118
-#: includes/admin/views/html-print-bookings-backup.php:136
-#: includes/admin/views/html-print-bookings.php:71
-#: includes/admin/views/html-print-bookings.php:87
+#: includes/admin/views/html-print-bookings.php:81
 msgid "No bookings found!."
 msgstr ""
 
-#: includes/admin/views/html-print-bookings-backup.php:128
-#: includes/admin/views/html-print-bookings.php:81
+#: includes/admin/views/html-print-bookings.php:91
 msgid "Print Results"
 msgstr ""
 
-#: includes/admin/views/html-print-bookings-backup.php:145
+#: includes/admin/views/html-print-bookings.php:113
 #: includes/admin/views/html-print-bookings.php:116
-#, php-format
-msgid "Here are your orders for booking (%1$s) starting on %2$s."
-msgstr ""
-
-#: includes/admin/views/html-print-bookings-backup.php:160
-msgid "Start Date"
-msgstr ""
-
-#: includes/admin/views/html-print-bookings-backup.php:161
-#: includes/admin/views/html-print-bookings.php:142
-msgid "Customers Name"
-msgstr ""
-
-#: includes/admin/views/html-print-bookings-backup.php:162
-#: includes/admin/views/html-print-bookings.php:143
-msgid "Order"
-msgstr ""
-
-#: includes/admin/views/html-print-bookings-backup.php:163
-#: includes/admin/views/html-print-bookings.php:144
-msgid "Product Add-ons"
-msgstr ""
-
-#: includes/admin/views/html-print-bookings-backup.php:165
-#: includes/admin/views/html-print-bookings.php:145
-#: includes/admin/views/html-select-bookings.php:152
-msgid "Order Notes"
-msgstr ""
-
-#: includes/admin/views/html-print-bookings-backup.php:202
-#: includes/admin/views/html-print-bookings.php:195
-#, php-format
-msgid "added on %1$s at %2$s"
-msgstr ""
-
-#: includes/admin/views/html-print-bookings-backup.php:206
-#: includes/admin/views/html-print-bookings.php:199
-#, php-format
-msgid "by %s"
-msgstr ""
-
-#: includes/admin/views/html-print-bookings-backup.php:212
-msgid "There are no notes yet."
-msgstr ""
-
-#: includes/admin/views/html-print-bookings-backup.php:223
-#: includes/admin/views/html-print-bookings.php:217
-msgid "All Day"
-msgstr ""
-
-#: includes/admin/views/html-print-bookings.php:94
-#, php-format
-msgid "This bookable product is not assigned to category: %s."
-msgstr ""
-
-#: includes/admin/views/html-print-bookings.php:109
-#: includes/admin/views/html-print-bookings.php:112
 #, php-format
 msgid ""
 "Here are your orders for booking (%1$s) starting on %2$s and ending on "
 "%3$s."
 msgstr ""
 
-#: includes/admin/views/html-print-bookings.php:141
+#: includes/admin/views/html-print-bookings.php:120
+#, php-format
+msgid "Here are your orders for booking (%1$s) starting on %2$s."
+msgstr ""
+
+#: includes/admin/views/html-print-bookings.php:145
 msgid "Booking Date and Time"
 msgstr ""
 
-#: includes/admin/views/html-print-bookings.php:223
+#: includes/admin/views/html-print-bookings.php:146
+msgid "Customers Name"
+msgstr ""
+
+#: includes/admin/views/html-print-bookings.php:147
+msgid "Order"
+msgstr ""
+
+#: includes/admin/views/html-print-bookings.php:148
+msgid "Order Items and Meta"
+msgstr ""
+
+#: includes/admin/views/html-print-bookings.php:149
+#: includes/admin/views/html-select-bookings.php:124
+msgid "Order Notes"
+msgstr ""
+
+#: includes/admin/views/html-print-bookings.php:199
+#, php-format
+msgid "added on %1$s at %2$s"
+msgstr ""
+
+#: includes/admin/views/html-print-bookings.php:203
+#, php-format
+msgid "by %s"
+msgstr ""
+
+#: includes/admin/views/html-print-bookings.php:221
+msgid "All Day"
+msgstr ""
+
+#: includes/admin/views/html-print-bookings.php:224
+msgid "Start Date"
+msgstr ""
+
+#: includes/admin/views/html-print-bookings.php:227
+msgid "End Date"
+msgstr ""
+
+#: includes/admin/views/html-print-bookings.php:231
 msgid "Booking Status"
 msgstr ""
 
-#: includes/admin/views/html-print-bookings.php:237
+#: includes/admin/views/html-print-bookings.php:245
 msgid "Order Date"
 msgstr ""
 
@@ -149,58 +144,54 @@ msgstr ""
 msgid "Select product"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:25
+#: includes/admin/views/html-select-bookings.php:18
 msgid ""
 "Select a bookable product, product category and the date and time of "
 "the bookings you wish to get results for and press the \"Get Bookings"
 "\" button."
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:34
+#: includes/admin/views/html-select-bookings.php:27
 msgid "Booked Product"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:51
-msgid "Is Bookable Product or a Resource?"
-msgstr ""
-
-#: includes/admin/views/html-select-bookings.php:71
+#: includes/admin/views/html-select-bookings.php:44
 msgid "Category"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:103
+#: includes/admin/views/html-select-bookings.php:76
 msgid "Booking date &amp; time"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:109
+#: includes/admin/views/html-select-bookings.php:82
 msgid "Start date:"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:118
+#: includes/admin/views/html-select-bookings.php:91
 msgid "End date:"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:127
+#: includes/admin/views/html-select-bookings.php:99
 msgid "All day booking:"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:128
+#: includes/admin/views/html-select-bookings.php:100
 msgid "Check this box if the booking is for all day."
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:134
+#: includes/admin/views/html-select-bookings.php:106
 msgid "Start time:"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:142
+#: includes/admin/views/html-select-bookings.php:114
 msgid "End time:"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:159
+#: includes/admin/views/html-select-bookings.php:131
 msgid "Check this box to show order notes."
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:170
+#: includes/admin/views/html-select-bookings.php:142
 msgid "Get Bookings"
 msgstr ""
 
