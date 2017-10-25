@@ -47,8 +47,8 @@ if ( ! class_exists( 'WC_Print_Bookings_Page' ) ) {
 					$category = isset( $_POST['product_category'] ) ? absint( $_POST['product_category'] ) : 0;
 
 					// Check if the bookable product is assigned to the product category.
-					if ( ! empty( $category ) && $category > 0 && ! $this->bookings_has_category( $category, $product_id ) ) {
-						$cat = get_category( $category );
+					if ( ! empty( $category ) && ! $this->bookings_has_term( $category, $product_id ) ) {
+						$cat = get_term( $category, 'product_cat' );
 						throw new Exception( sprintf( __( 'The bookable product you have selected does not have category: <strong>%s</strong>. Please <a href="javascript:history.back()">go back</a> and select another.', 'woocommerce-print-bookings' ), $cat->name ) );
 					}
 
@@ -111,12 +111,12 @@ if ( ! class_exists( 'WC_Print_Bookings_Page' ) ) {
 		 * @param  $product_id
 		 * @return bool
 		 */
-		public function bookings_has_category( $category, $product_id ) {
-			if ( ! empty( $category ) && has_category( $category, $product_id ) ) {
+		public function bookings_has_term( $category, $product_id ) {
+			if ( has_term( $category, 'product_cat', $product_id ) ) {
 				return true;
 			}
 			return false;
-		} // bookings_has_category()
+		} // bookings_has_term()
 
 	} // END class
 
