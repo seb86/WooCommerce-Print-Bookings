@@ -34,22 +34,28 @@ if ( ! class_exists( 'WC_Print_Bookings_Page' ) ) {
 
 			try {
 				if ( ! empty( $_POST ) && ! check_admin_referer( 'get_bookings' ) ) {
-					throw new Exception( __( 'Error - please try again', 'woocommerce-print-bookings' ) );
+					throw new Exception( __( 'Error - please <a href="javascript:history.back()">go back</a> and try again.', 'woocommerce-print-bookings' ) );
 				}
 
 				if ( ! empty( $_POST['get_bookings'] ) ) {
 					$product_id = isset( $_POST['product_id'] ) ? $_POST['product_id'] : 0;
 
 					if ( $product_id == 0 ) {
-						throw new Exception( __( 'Error - Please choose a bookable product.', 'woocommerce-print-bookings' ) );
+						throw new Exception( __( 'Error - Please <a href="javascript:history.back()">go back</a> and choose a bookable product.', 'woocommerce-print-bookings' ) );
 					}
 
 					$category = isset( $_POST['product_category'] ) ? absint( $_POST['product_category'] ) : 0;
 
+					// Check if the bookable product is assigned to the product category.
+					if ( ! empty( $category ) && $category > 0 && ! $this->bookings_has_category( $category, $product_id ) ) {
+						$cat = get_category( $category );
+						throw new Exception( sprintf( __( 'The bookable product you have selected does not have category: <strong>%s</strong>. Please <a href="javascript:history.back()">go back</a> and select another.', 'woocommerce-print-bookings' ), $cat->name ) );
+					}
+
 					$start_date = isset( $_POST['booking_start_date'] ) ? wc_clean( $_POST['booking_start_date'] ) : '';
 
 					if ( empty( $start_date ) ) {
-						throw new Exception( __( 'Error - Please select a start date for the bookings.', 'woocommerce-print-bookings' ) );
+						throw new Exception( __( 'Error - Please <a href="javascript:history.back()">go back</a> and select a start date for the bookings.', 'woocommerce-print-bookings' ) );
 					}
 
 					$end_date         = isset( $_POST['booking_end_date'] ) ? wc_clean( $_POST['booking_end_date'] ) : '';
