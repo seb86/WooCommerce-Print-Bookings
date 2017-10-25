@@ -10,14 +10,7 @@ $bookable_products = array( '' => __( 'Select product', 'woocommerce-print-booki
 
 foreach ( WC_Bookings_Admin::get_booking_products() as $bookable_product ) {
 	$bookable_products[ $bookable_product->get_id() ] = $bookable_product->get_name();
-
-	/*$resources = $bookable_product->get_resources();
-
-	foreach ( $resources as $resource ) {
-		$bookable_products[ $bookable_product->get_id() . '=>' . $resource->get_id() ] = '&nbsp;&nbsp;&nbsp;' . $resource->get_name();
-	}*/
 }
-
 ?>
 <div class="wrap woocommerce-print-bookings">
 	<h2><?php _e( 'Print Bookings', 'woocommerce-print-bookings' ); ?></h2>
@@ -46,26 +39,6 @@ foreach ( WC_Bookings_Admin::get_booking_products() as $bookable_product ) {
 						?>
 					</td>
 				</tr>
-				<!--tr valign="top">
-					<th scope="row">
-						<label for="product"><?php _e( 'Is Bookable Product or a Resource?', 'woocommerce-print-bookings' ); ?></label>
-					</th>
-					<td>
-						<?php
-						woocommerce_wp_select( array(
-							'id'            => 'product_or_resource',
-							'class'         => 'wc-enhanced-select',
-							'wrapper_class' => 'form-field form-field-wide',
-							'label'         => '',
-							'options'       => array(
-								'_booking_product_id'  => esc_attr( 'Bookable Product', 'woocommerce-print-bookings' ),
-								'_booking_resource_id' => esc_attr( 'Resource', 'woocommerce-print-bookings' )
-							),
-							'style'         => 'width:320px;'
-						) );
-						?>
-					</td>
-				</tr-->
 				<tr valign="top">
 					<th scope="row">
 						<label for="category"><?php _e( 'Category', 'woocommerce-print-bookings' ); ?></label>
@@ -117,7 +90,6 @@ foreach ( WC_Bookings_Admin::get_booking_products() as $bookable_product ) {
 							'id'          => 'booking_end_date',
 							'label'       => __( 'End date:', 'woocommerce-print-bookings' ),
 							'placeholder' => 'yyyy-mm-dd',
-							'value'       => date( 'Y-m-d' ),
 							'class'       => 'booking_end_date',
 							'style'       => 'width:100px;'
 						) );
