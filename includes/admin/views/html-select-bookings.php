@@ -39,6 +39,30 @@ foreach ( WC_Bookings_Admin::get_booking_products() as $bookable_product ) {
 						?>
 					</td>
 				</tr>
+				<th scope="row">
+					<label for="booked_status"><?php _e( 'Booked Status', 'woocommerce-print-bookings' ); ?></label>
+				</th>
+				<td>
+					<?php
+					woocommerce_wp_select( array(
+						'id'            => 'post_status',
+						'class'         => 'wc-enhanced-select',
+						'wrapper_class' => 'form-field form-field-wide',
+						'label'         => '',
+						'options'       => array(
+							''                => __( 'Any Booking Status', 'woocommerce-print-bookings' ),
+							'confirmed'       => __( 'Confirmed', 'woocommerce-print-bookings' ),
+							'paid'            => __( 'Paid', 'woocommerce-print-bookings' ),
+							'partial-payment' => __( 'Partially Paid', 'woocommerce-print-bookings' ),
+							'complete'        => __( 'Completed', 'woocommerce-print-bookings' ),
+							'unpaid'          => __( 'Un-paid', 'woocommerce-print-bookings' )
+						),
+						'style'         => 'width:320px;',
+						'value'         => ''
+					) );
+					?>
+				</td>
+			</tr>
 				<tr valign="top">
 					<th scope="row">
 						<label for="category"><?php _e( 'Category', 'woocommerce-print-bookings' ); ?></label>

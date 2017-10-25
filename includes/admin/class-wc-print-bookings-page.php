@@ -44,6 +44,8 @@ if ( ! class_exists( 'WC_Print_Bookings_Page' ) ) {
 						throw new Exception( __( 'Error - Please <a href="javascript:history.back()">go back</a> and choose a bookable product.', 'woocommerce-print-bookings' ) );
 					}
 
+					$post_status = isset( $_POST['post_status'] ) ? wc_clean( $_POST['post_status'] ) : '';
+
 					$category = isset( $_POST['product_category'] ) ? absint( $_POST['product_category'] ) : 0;
 
 					// Check if the bookable product is assigned to the product category.
@@ -69,7 +71,7 @@ if ( ! class_exists( 'WC_Print_Bookings_Page' ) ) {
 
 					$booked_product = wc_get_product( $product_id );
 
-					do_action( 'woocommerce_print_bookings_page_form_submitted', $booked_product, $product_id, $category, $start_date, $end_date, $booking_all_day, $start_time, $end_time, $show_order_notes );
+					do_action( 'woocommerce_print_bookings_page_form_submitted', $booked_product, $product_id, $post_status, $category, $start_date, $end_date, $booking_all_day, $start_time, $end_time, $show_order_notes );
 				}
 
 				if ( $step == 2 && empty( $booked_product ) ) {

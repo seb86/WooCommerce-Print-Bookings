@@ -1,18 +1,22 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
-global $wpdb;
-
-$args = '';
-$booking_date_args = '';
-
 if ( ! empty( $booked_product ) ) {
 	$args = array(
 		'post_type'      => 'wc_booking',
-		'post_status'    => 'confirmed',
+		'post_status'    => 'any',
 		'posts_per_page' => -1,
 		'order'          => 'ASC',
 	);
+
+	// Filter the booking status
+	if ( ! empty( $post_status ) ) {
+		$post_status_arg = array(
+			'post_status' => $post_status
+		);
+	}
+
+	$args = wp_parse_args( $post_status_arg, $args );
 
 	if ( ! empty( $start_time ) && $booking_all_day == "no" ) {
 		$start_date = date_i18n( wc_date_format() . ', ' . wc_time_format(), strtotime( $start_date.$start_time ) );
@@ -78,7 +82,7 @@ if ( ! empty( $booked_product ) ) {
 }
 
 if ( ! empty( $booked_product ) && empty( $bookings ) ) {
-	$this->errors[] = __( 'No bookings found!.', 'woocommerce-print-bookings' );
+	$this->errors[] = __( 'No bookings found! <a href="javascript:history.back()">Go back</a> and make a new selection.', 'woocommerce-print-bookings' );
 }
 ?>
 <div class="wrap woocommerce-print-bookings">
