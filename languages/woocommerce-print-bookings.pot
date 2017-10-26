@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Print Bookings 1.0.0\n"
 "Report-Msgid-Bugs-To: https://sebastiendumont.com/contact-me/\n"
-"POT-Creation-Date: 2017-10-25 16:16+0200\n"
+"POT-Creation-Date: 2017-10-26 14:40+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -69,9 +69,9 @@ msgid ""
 msgstr ""
 
 #: includes/admin/views/html-print-bookings.php:85
-#, php-format
 msgid ""
-"No bookings found! <a href=\"%s\">Go back</a> and make a new selection."
+"No bookings found! <a href=\"javascript:history.back()\">Go back</a> "
+"and make a new selection."
 msgstr ""
 
 #: includes/admin/views/html-print-bookings.php:95
@@ -108,7 +108,7 @@ msgid "Order Items and Meta"
 msgstr ""
 
 #: includes/admin/views/html-print-bookings.php:153
-#: includes/admin/views/html-select-bookings.php:148
+#: includes/admin/views/html-select-bookings.php:155
 msgid "Order Notes"
 msgstr ""
 
@@ -161,67 +161,75 @@ msgstr ""
 msgid "Booked Status"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:53
+#: includes/admin/views/html-select-bookings.php:48
 msgid "Any Booking Status"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:54
+#: includes/admin/views/html-select-bookings.php:49
+msgid "Unpaid"
+msgstr ""
+
+#: includes/admin/views/html-select-bookings.php:50
+msgid "Pending Confirmation"
+msgstr ""
+
+#: includes/admin/views/html-select-bookings.php:51
 msgid "Confirmed"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:55
+#: includes/admin/views/html-select-bookings.php:52
 msgid "Paid"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:56
-msgid "Partially Paid"
+#: includes/admin/views/html-select-bookings.php:53
+msgid "Cancelled"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:57
+#: includes/admin/views/html-select-bookings.php:54
 msgid "Completed"
 msgstr ""
 
 #: includes/admin/views/html-select-bookings.php:58
-msgid "Un-paid"
+msgid "Partially Paid"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:68
+#: includes/admin/views/html-select-bookings.php:75
 msgid "Category"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:100
+#: includes/admin/views/html-select-bookings.php:107
 msgid "Booking date &amp; time"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:106
+#: includes/admin/views/html-select-bookings.php:113
 msgid "Start date:"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:115
+#: includes/admin/views/html-select-bookings.php:122
 msgid "End date:"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:123
+#: includes/admin/views/html-select-bookings.php:130
 msgid "All day booking:"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:124
+#: includes/admin/views/html-select-bookings.php:131
 msgid "Check this box if the booking is for all day."
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:130
+#: includes/admin/views/html-select-bookings.php:137
 msgid "Start time:"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:138
+#: includes/admin/views/html-select-bookings.php:145
 msgid "End time:"
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:155
+#: includes/admin/views/html-select-bookings.php:162
 msgid "Check this box to show order notes."
 msgstr ""
 
-#: includes/admin/views/html-select-bookings.php:166
+#: includes/admin/views/html-select-bookings.php:173
 msgid "Get Bookings"
 msgstr ""
 
