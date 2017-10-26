@@ -55,7 +55,7 @@ foreach ( WC_Bookings_Admin::get_booking_products() as $bookable_product ) {
 					);
 
 					if ( class_exists( 'WC_Deposits' ) ) {
-						$statuses['partial-payment'] = __( 'Partially Paid','woocommerce-print-bookings' );
+						$statuses['partial-payment'] = __( 'Partially Paid', 'woocommerce-print-bookings' );
 					}
 
 					woocommerce_wp_select( array(
