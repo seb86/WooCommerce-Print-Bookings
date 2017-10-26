@@ -84,7 +84,7 @@ foreach ( WC_Bookings_Admin::get_booking_products() as $bookable_product ) {
 						) );
 
 						$category_options = array(
-							'' => esc_attr( 'Select Product Category', 'woocommerce-print-bookings' )
+							'' => esc_attr( 'Any Product Category', 'woocommerce-print-bookings' )
 						);
 
 						foreach ( $categories as $category ) {
