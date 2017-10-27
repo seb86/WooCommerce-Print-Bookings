@@ -17,6 +17,17 @@ jQuery( document ).ready( function($) {
 			$print_results_table   = $print_bookings_screen.find( 'table#print-bookings-table' ),
 			$print_results_button  = $print_bookings_screen.find( 'a.print-table-results' );
 
+	// TipTip
+	var tiptip_args = {
+		'attribute': 'data-tip',
+		'fadeIn': 50,
+		'fadeOut': 50,
+		'delay': 200
+	};
+
+	$( '.tips, .help_tip, .woocommerce-help-tip' ).tipTip( tiptip_args ).css( 'cursor', 'help' );
+
+	// Date Picker
 	$( '.booking_start_date, .booking_end_date' ).datepicker({
 		changeMonth: true,
 		changeYear: true,
