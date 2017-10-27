@@ -18,9 +18,13 @@ jQuery( document ).ready( function($) {
 			$print_results_button  = $print_bookings_screen.find( 'a.print-table-results' );
 
 	$( '.booking_start_date, .booking_end_date' ).datepicker({
+		changeMonth: true,
+		changeYear: true,
 		dateFormat: 'yy-mm-dd',
 		numberOfMonths: 1,
 		showButtonPanel: true,
+		showOtherMonths: true,
+		selectOtherMonths: true
 	});
 
 	$( '#booking_all_day' ).change( function () {
