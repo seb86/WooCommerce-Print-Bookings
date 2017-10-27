@@ -22,20 +22,18 @@ a.print-table-results {
 	border-bottom: 2px solid #eee;
 	clear: both;
 	display: block;
-	margin-left: -1%;
-	margin-top: -1%;
-	padding: 1em;
+	margin-left: -1.6em;
+	margin-top: -0.6em;
+	padding: 0.6em 1.6em;
 	position: fixed;
-	/*top: 0;
-	left: 0;
-	right: 0;*/
+	top: 40px;
 	width: 90%;
 	z-index: 10;
 }
 
 #print-bookings-table {
 	float: left;
-	margin-top: 100px;
+	margin-top: 8em;
 	width: 100%;
 }
 
