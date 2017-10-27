@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
-if ( ! empty( $booked_product ) ) {
+if ( ! empty( $product_id ) ) {
 	$args = array(
 		'post_type'      => 'wc_booking',
 		'post_status'    => 'any',
@@ -14,23 +14,32 @@ if ( ! empty( $booked_product ) ) {
 		$post_status_arg = array(
 			'post_status' => $post_status
 		);
+
+		$args = wp_parse_args( $post_status_arg, $args );
 	}
 
-	$args = wp_parse_args( $post_status_arg, $args );
+	// Filter bookings based on product category if set.
+	if ( ! empty( $category ) ) {
+		foreach( $product_id as $key => $prod ) {
+			if ( ! $this->bookings_has_term( $category, $prod ) ) {
+				unset( $product_id[$key] ); // Remove product ID before querying if the category is not assigned to the product.
+			}
+		}
+	}
 
 	if ( ! empty( $start_time ) && $booking_all_day == "no" ) {
-		$start_date = date_i18n( wc_date_format() . ', ' . wc_time_format(), strtotime( $start_date.$start_time ) );
+		$query_start_date = date_i18n( wc_date_format() . ', ' . wc_time_format(), strtotime( $start_date . $start_time ) );
 	}
 	else {
-		$start_date = date_i18n( wc_date_format() . ', ' . wc_time_format(), strtotime( $start_date ) );
+		$query_start_date = date_i18n( wc_date_format() . ', ' . wc_time_format(), strtotime( $start_date ) );
 	}
 
 	if ( ! empty( $end_date ) ) {
 		if ( ! empty( $end_time ) && $booking_all_day == "no" ) {
-			$end_date = date_i18n( wc_date_format() . ', ' . wc_time_format(), strtotime( $end_date.$end_time ) );
+			$query_end_date = date_i18n( wc_date_format() . ', ' . wc_time_format(), strtotime( $end_date . $end_time ) );
 		}
 		else {
-			$end_date = date_i18n( wc_date_format() . ', ' . wc_time_format(), strtotime( $end_date ) );
+			$query_end_date = date_i18n( wc_date_format() . ', ' . wc_time_format(), strtotime( $end_date ) );
 		}
 	}
 
@@ -39,12 +48,13 @@ if ( ! empty( $booked_product ) ) {
 			'meta_query' => array(
 				'relation' => 'AND',
 				array(
-					'key'   => '_booking_product_id',
-					'value' => $product_id
+					'key'     => '_booking_product_id',
+					'value'   => $product_id,
+					'compare' => 'IN'
 				),
 				array(
 					'key'     => '_booking_start',
-					'value'   => esc_sql( date( 'YmdHis', strtotime( $start_date ) ) ),
+					'value'   => esc_sql( date( 'YmdHis', strtotime( $query_start_date ) ) ),
 					'compare' => '>=',
 					'orderby' => 'meta_value_num'
 				)
@@ -57,17 +67,18 @@ if ( ! empty( $booked_product ) ) {
 				'relation' => 'AND',
 				array(
 					'key'   => '_booking_product_id',
-					'value' => $product_id
+					'value' => $product_id,
+					'compare' => 'IN'
 				),
 				array(
 					'key'     => '_booking_start',
-					'value'   => esc_sql( date( 'YmdHis', strtotime( $start_date ) ) ),
+					'value'   => esc_sql( date( 'YmdHis', strtotime( $query_start_date ) ) ),
 					'compare' => '>=',
 					'orderby' => 'meta_value_num'
 				),
 				array(
 					'key'     => '_booking_end',
-					'value'   => esc_sql( date( 'YmdHis', strtotime( $end_date ) ) ),
+					'value'   => esc_sql( date( 'YmdHis', strtotime( $query_end_date ) ) ),
 					'compare' => '<=',
 				)
 			)
@@ -81,7 +92,7 @@ if ( ! empty( $booked_product ) ) {
 	$bookings = get_posts( $args );
 }
 
-if ( ! empty( $booked_product ) && empty( $bookings ) ) {
+if ( ! empty( $product_id ) && empty( $bookings ) ) {
 	$this->errors[] = __( 'No bookings found! <a href="javascript:history.back()">Go back</a> and make a new selection.', 'woocommerce-print-bookings' );
 }
 ?>
@@ -89,7 +100,7 @@ if ( ! empty( $booked_product ) && empty( $bookings ) ) {
 	<div class="print-bookings-results">
 		<h2>
 		<?php
-		if ( empty( $booked_product ) ) {
+		if ( empty( $bookings ) ) {
 			_e( 'Print Bookings', 'woocommerce-print-bookings' );
 		} else {
 			_e( 'Print Bookings', 'woocommerce-print-bookings' ); ?> <a href="#" class="page-title-action print-table-results"><?php _e( 'Print Results', 'woocommerce-print-bookings' ); ?></a>
@@ -97,51 +108,69 @@ if ( ! empty( $booked_product ) && empty( $bookings ) ) {
 		</h2>
 
 		<?php
-		if ( WP_DEBUG ) print_r($args);
+		// If debug mode is enabled then print the search query.
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && ! empty( $args ) ) {
+			echo __( 'Debug query', 'woocommerce-print-bookings' ) . ': ';
+			print_r($args);
+		}
 
 		$this->show_errors();
 
-		if ( ! empty( $booked_product ) && empty( $bookings ) ) {
+		if ( ! empty( $product_id ) && empty( $bookings ) ) {
 			exit();
 		}
 
 		// Prevent the page from loading any further if the page was refreshed.
-		if ( $step == 2 && empty( $booked_product ) ) {
+		if ( $step == 2 && empty( $product_id ) ) {
 			exit();
 		}
 		?>
 
 		<p>
-		<?php if ( ! empty( $end_date ) ) {
+		<?php
+		$bookable_products = array();
+
+		foreach ( $product_id as $product ) {
+			$booked_product = wc_get_product( $product );
+			$bookable_products[] = $booked_product->get_name();
+		}
+
+		$booked_products = implode( ", ", $bookable_products );
+
+		printf( __( 'Here are your orders for the following bookings <strong>(%s)</strong>', 'woocommerce-print-bookings' ), $booked_products );
+		echo " ";
+
+		if ( ! empty( $start_time ) ) {
+			printf( __( 'starting on <strong>%1$s</strong> @ <strong>%2$s</strong>', 'woocommerce-print-bookings' ), date_i18n( get_option( 'date_format' ), strtotime( $start_date . $start_time ) ), date_i18n( get_option( 'time_format' ), strtotime( $start_date . $start_time ) ) );
+			echo " ";
+		}
+		else {
 			if ( $booking_all_day == "yes" ) {
-				printf( __( 'Here are your orders for booking (%1$s) starting on %2$s and ending on %3$s.', 'woocommerce-print-bookings' ), $booked_product->get_name(), date_i18n( get_option( 'date_format' ), strtotime( $start_date ) ), date_i18n( get_option( 'date_format' ), strtotime( $end_date ) ) );
+				_e( 'for the whole day.', 'woocommerce-print-bookings' );
 			}
-			else{
-				printf( __( 'Here are your orders for booking (%1$s) starting on %2$s and ending on %3$s.', 'woocommerce-print-bookings' ), $booked_product->get_name(), date_i18n( get_option( 'date_format' ), strtotime( $start_date.$start_time ) ), date_i18n( get_option( 'date_format' ), strtotime( $end_date.$end_time ) ) );
+			else {
+				printf( __( 'starting on <strong>%s</strong>', 'woocommerce-print-bookings' ), date_i18n( get_option( 'date_format' ), strtotime( $start_date ) ) );
+				echo " ";
 			}
 		}
-		else{
-			printf( __( 'Here are your orders for booking (%1$s) starting on %2$s.', 'woocommerce-print-bookings' ), $booked_product->get_name(), date_i18n( get_option( 'date_format' ), strtotime( $start_date ) ) );
+
+		if ( ! empty( $end_date ) && $booking_all_day != "yes" ) {
+			if ( empty( $end_time ) ) {
+				printf( __( 'and ending on <strong>%s</strong>', 'woocommerce-print-bookings' ), date_i18n( get_option( 'date_format' ), strtotime( $end_date ) ) );
+			}
+			else {
+				printf( __( 'and ending on <strong>%1$s</strong> @ <strong>%2$s</strong>', 'woocommerce-print-bookings' ), date_i18n( get_option( 'date_format' ), strtotime( $end_date . $end_time ) ), date_i18n( get_option( 'time_format' ), strtotime( $end_date . $end_time ) ) );
+			}
 		}
+
+		echo ".";
 		?>
 		</p>
 	</div>
 
-	<form method="POST" name="print-bookings-form" action="<?php echo add_query_arg( array( 'page' => 'print-bookings', 'step' => '2' ), admin_url( "edit.php?post_type=wc_booking" ) ); ?>">
-		<input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
-		<input type="hidden" name="product_category" value="<?php echo $category; ?>" />
-		<input type="hidden" name="booking_start_date" value="<?php echo $start_date; ?>" />
-		<input type="hidden" name="booking_end_date" value="<?php echo $end_date; ?>" />
-		<input type="hidden" name="booking_all_day" value="<?php echo $booking_all_day; ?>" />
-		<input type="hidden" name="booking_start_time" value="<?php echo $start_time; ?>" />
-		<input type="hidden" name="booking_end_time" value="<?php echo $end_time; ?>" />
-		<input type="hidden" name="show_order_notes" value="<?php echo $show_order_notes; ?>" />
-		<?php do_action( 'woocommerce_print_bookings_hidden_fields' ); ?>
-		<?php wp_nonce_field( 'get_bookings' ); ?>
-	</form>
-
 	<div style="overflow-x:auto;">
-		<table id="print-bookings-table">
+		<?php $style = defined( 'WP_DEBUG' ) && WP_DEBUG ? ' style="margin-top: 12em !important;"' : ''; ?>
+		<table id="print-bookings-table"<?php echo $style; ?>>
 			<tbody>
 				<tr valign="top">
 					<?php
@@ -225,10 +254,10 @@ if ( ! empty( $booked_product ) && empty( $bookings ) ) {
 									echo __( 'All Day', 'woocommerce-print-bookings' );
 								}
 								else {
-									echo __( 'Start Date', 'woocommerce-print-bookings' ) . ': <strong>' . date_i18n( "F j, Y g:ia", strtotime( $booking->get_start_date( '', 'F j, Y g:ia' ) ) ) . '</strong>';
+									echo __( 'Start Date', 'woocommerce-print-bookings' ) . ': <strong>' . date_i18n( "F j, Y g:i a", strtotime( $booking->get_start_date( '', 'F j, Y g:i a' ) ) ) . '</strong>';
 
 									if ( ! empty( $end_date ) ) {
-										echo '<br>' . __( 'End Date', 'woocommerce-print-bookings' ) . ': <strong>' . date_i18n( "F j, Y g:ia", strtotime( $booking->get_end_date( '', 'F j, Y g:ia' ) ) ) . '</strong>';
+										echo '<br>' . __( 'End Date', 'woocommerce-print-bookings' ) . ': <strong>' . date_i18n( "F j, Y g:i a", strtotime( $booking->get_end_date( '', 'F j, Y g:i a' ) ) ) . '</strong>';
 									}
 								}
 
