@@ -2,15 +2,12 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
 wp_enqueue_style( 'woocommerce_admin_styles' );
-wp_enqueue_script( 'wc-enhanced-select' );
-wp_enqueue_script( 'jquery-ui-datepicker' );
 wp_enqueue_style( 'jquery-ui-style' );
 
-$bookable_products = array( '' => __( 'Select product', 'woocommerce-print-bookings' ) );
-
-foreach ( WC_Bookings_Admin::get_booking_products() as $bookable_product ) {
-	$bookable_products[ $bookable_product->get_id() ] = $bookable_product->get_name();
-}
+wp_enqueue_script( 'woocommerce_admin' );
+wp_enqueue_script( 'wc-enhanced-select' );
+wp_enqueue_script( 'jquery-tiptip' );
+wp_enqueue_script( 'jquery-ui-datepicker' );
 ?>
 <div class="wrap woocommerce-print-bookings">
 	<h2><?php _e( 'Print Bookings', 'woocommerce-print-bookings' ); ?></h2>
@@ -24,19 +21,14 @@ foreach ( WC_Bookings_Admin::get_booking_products() as $bookable_product ) {
 			<tbody>
 				<tr valign="top">
 					<th scope="row">
-						<label for="booked_product"><?php _e( 'Booked Product', 'woocommerce-print-bookings' ); ?></label>
+						<label for="booked_product"><?php _e( 'Bookable Products', 'woocommerce-print-bookings' ); ?></label>
 					</th>
 					<td>
-						<?php
-						woocommerce_wp_select( array(
-							'id'            => 'product_id',
-							'class'         => 'wc-enhanced-select',
-							'wrapper_class' => 'form-field form-field-wide',
-							'label'         => '',
-							'options'       => $bookable_products,
-							'style'         => 'width:320px;'
-						) );
-						?>
+						<p class="form-field form-field-wide">
+							<?php echo wc_help_tip( __( 'Search & Select the bookable products to return bookings for.', 'woocommerce-print-bookings' ) ); ?>
+							<select id="product_id" class="wc-product-search" name="product_id[]" multiple="multiple" style="width: 400px;" data-sortable="sortable" data-placeholder="<?php esc_attr_e( 'Search & Select the bookable products to return bookings for.', 'woocommerce-print-bookings' ); ?>" data-action="woocommerce_json_search_products_and_variations">
+							</select>
+						</p>
 					</td>
 				</tr>
 				<th scope="row">
@@ -64,42 +56,37 @@ foreach ( WC_Bookings_Admin::get_booking_products() as $bookable_product ) {
 						'wrapper_class' => 'form-field form-field-wide',
 						'label'         => '',
 						'options'       => $statuses,
-						'style'         => 'width:320px;',
-						'value'         => ''
+						'style'         => 'width:400px;',
+						'value'         => '',
+						'description'   => __( 'Filters the booking results by the booking status.', 'woocommerce-print-bookings' ),
+						'desc_tip'      => true,
 					) );
 					?>
 				</td>
 			</tr>
 				<tr valign="top">
 					<th scope="row">
-						<label for="category"><?php _e( 'Category', 'woocommerce-print-bookings' ); ?></label>
+						<label for="categories"><?php _e( 'Categories', 'woocommerce-print-bookings' ); ?></label>
 					</th>
 					<td>
 						<?php
 						$categories = get_categories( array(
 							'orderby'    => 'name',
 							'parent'     => 0,
-							'hide_empty' => 0,
+							'hide_empty' => 1,
 							'taxonomy'   => 'product_cat'
 						) );
-
-						$category_options = array(
-							'' => esc_attr( 'Any Product Category', 'woocommerce-print-bookings' )
-						);
-
-						foreach ( $categories as $category ) {
-							$category_options[$category->term_id] = esc_html( $category->cat_name ) . " (" . esc_html( $category->category_count ) . ")";
-						}
-
-						woocommerce_wp_select( array(
-							'id'            => 'product_category',
-							'class'         => 'wc-enhanced-select',
-							'wrapper_class' => 'form-field form-field-wide',
-							'label'         => '',
-							'options'       => $category_options,
-							'style'         => 'width:320px;'
-						) );
 						?>
+						<p class="form-field form-field-wide">
+							<?php echo wc_help_tip( __( 'Filters the booking results by the product category associated.', 'woocommerce-print-bookings' ) ); ?>
+							<select id="product_category" name="product_category" class="wc-enhanced-select" multiple="multiple" style="width:400px;">
+							<?php
+							foreach ( $categories as $category ) {
+								echo '<option value="' . $category->term_id . '">' . esc_html( $category->cat_name ) . ' (' . esc_html( $category->category_count ) . ')</option>';
+							}
+							?>
+							</select>
+						</p>
 					</td>
 				</tr>
 				<tr valign="top">
