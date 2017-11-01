@@ -58,11 +58,6 @@ if ( ! class_exists( 'WC_Print_Bookings_Page' ) ) {
 					$end_time         = isset( $_POST['booking_end_time'] ) ? wc_clean( $_POST['booking_end_time'] ) : '';
 					$show_order_notes = isset( $_POST['show_order_notes'] ) ? true : false;
 
-					// If the end date was not set but an end time was then set end date the same as start date.
-					if ( empty( $end_date ) && ! empty( $end_time ) ) {
-						$end_date = $start_date;
-					}
-
 					// Ready to load the next page.
 					$step +1;
 
