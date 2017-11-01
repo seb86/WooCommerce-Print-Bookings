@@ -19,6 +19,8 @@ if ( ! empty( $product_id ) ) {
 
 	// Filter the booking status
 	if ( ! empty( $post_status ) ) {
+		$post_status = implode( ", ", wc_clean( $post_status ) );
+
 		$post_status_arg = array(
 			'post_status' => $post_status
 		);

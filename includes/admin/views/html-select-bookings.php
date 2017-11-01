@@ -37,7 +37,6 @@ wp_enqueue_script( 'jquery-ui-datepicker' );
 				<td>
 					<?php
 					$statuses = array(
-						''                     => __( 'Any Booking Status', 'woocommerce-print-bookings' ),
 						'unpaid'               => __( 'Unpaid', 'woocommerce-print-bookings' ),
 						'pending-confirmation' => __( 'Pending Confirmation','woocommerce-print-bookings' ),
 						'confirmed'            => __( 'Confirmed', 'woocommerce-print-bookings' ),
@@ -49,19 +48,17 @@ wp_enqueue_script( 'jquery-ui-datepicker' );
 					if ( class_exists( 'WC_Deposits' ) ) {
 						$statuses['partial-payment'] = __( 'Partially Paid', 'woocommerce-print-bookings' );
 					}
-
-					woocommerce_wp_select( array(
-						'id'            => 'post_status',
-						'class'         => 'wc-enhanced-select',
-						'wrapper_class' => 'form-field form-field-wide',
-						'label'         => '',
-						'options'       => $statuses,
-						'style'         => 'width:400px;',
-						'value'         => '',
-						'description'   => __( 'Filters the booking results by the booking status.', 'woocommerce-print-bookings' ),
-						'desc_tip'      => true,
-					) );
 					?>
+					<p class="form-field form-field-wide">
+						<?php echo wc_help_tip( __( 'Filters the booking results by the booking status.', 'woocommerce-print-bookings' ) ); ?>
+						<select id="post_status" name="post_status" class="wc-enhanced-select" multiple="multiple" style="width:400px;">
+						<?php
+						foreach ( $statuses as $key => $status ) {
+							echo '<option value="' . $key . '">' . esc_html( $status ) . '</option>';
+						}
+						?>
+						</select>
+					</p>
 				</td>
 			</tr>
 				<tr valign="top">
