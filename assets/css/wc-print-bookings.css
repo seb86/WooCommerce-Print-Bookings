@@ -37,6 +37,11 @@ a.print-table-results {
 	width: 100%;
 }
 
+#print-bookings-table th.booking_date,
+#print-bookings-table th.customers_name {
+	width: 20%;
+}
+
 #print-bookings-table th {
 	background-color: #4CAF50;
 	color: #ffffff;
