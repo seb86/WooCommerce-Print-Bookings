@@ -44,11 +44,9 @@ if ( ! class_exists( 'WC_Print_Bookings_Page' ) ) {
 						throw new Exception( __( 'Error - Please <a href="javascript:history.back()">go back</a> and choose at least one bookable product.', 'woocommerce-print-bookings' ) );
 					}
 
-					$post_status = isset( $_POST['post_status'] ) ? wc_clean( $_POST['post_status'] ) : '';
-
-					$category = isset( $_POST['product_category'] ) ? array_map( 'intval', (array) $_POST['product_category'] ) : array();
-
-					$start_date = isset( $_POST['booking_start_date'] ) ? wc_clean( $_POST['booking_start_date'] ) : '';
+					$post_status = isset( $_POST['post_status'] ) ? $_POST['post_status'] : array();
+					$category    = isset( $_POST['product_category'] ) ? array_map( 'intval', (array) $_POST['product_category'] ) : array();
+					$start_date  = isset( $_POST['booking_start_date'] ) ? wc_clean( $_POST['booking_start_date'] ) : '';
 
 					if ( empty( $start_date ) ) {
 						throw new Exception( __( 'Error - Please <a href="javascript:history.back()">go back</a> and select a start date for the bookings.', 'woocommerce-print-bookings' ) );
