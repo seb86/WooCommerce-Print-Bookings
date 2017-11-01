@@ -15,7 +15,8 @@ jQuery( document ).ready( function($) {
 
 	var $print_bookings_screen = $( '.wc_booking_page_print-bookings' ),
 			$print_results_table   = $print_bookings_screen.find( 'table#print-bookings-table' ),
-			$print_results_button  = $print_bookings_screen.find( 'a.print-table-results' );
+			$print_results_button  = $print_bookings_screen.find( 'a.print-table-results' ),
+			$wp_footer             = $print_bookings_screen.find( '#wpfooter' );
 
 	// TipTip
 	var tiptip_args = {
@@ -49,6 +50,8 @@ jQuery( document ).ready( function($) {
 	// Print Results
 	if ( $print_results_table.length ) {
 		$print_results_button.fadeIn('slow').show();
+
+		$wp_footer.css( 'position', 'relative' );
 	}
 
 	$( 'a.print-table-results' ).click(function( e ) {
