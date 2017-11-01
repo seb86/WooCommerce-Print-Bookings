@@ -1,12 +1,20 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
+$debug_mode = defined( 'WP_DEBUG' ) && WP_DEBUG ? 'yes' : 'no';
+
 if ( ! empty( $product_id ) ) {
 	$args = array(
 		'post_type'      => 'wc_booking',
-		'post_status'    => 'any',
+		'post_status'    => get_wc_booking_statuses(),
 		'posts_per_page' => -1,
-		'order'          => 'ASC',
+		'offset'         => 0,
+		'nopaging'       => true,
+		'post_parent'    => 0,
+		'orderby'        => 'post_date',
+		'order'          => 'DESC',
+		'meta_key'       => '_booking_product_id',
+		'meta_value'     => $product_id,
 	);
 
 	// Filter the booking status
@@ -48,11 +56,6 @@ if ( ! empty( $product_id ) ) {
 			'meta_query' => array(
 				'relation' => 'AND',
 				array(
-					'key'     => '_booking_product_id',
-					'value'   => $product_id,
-					'compare' => 'IN'
-				),
-				array(
 					'key'     => '_booking_start',
 					'value'   => esc_sql( date( 'YmdHis', strtotime( $query_start_date ) ) ),
 					'compare' => '>=',
@@ -65,11 +68,6 @@ if ( ! empty( $product_id ) ) {
 		$booking_date_args = array(
 			'meta_query' => array(
 				'relation' => 'AND',
-				array(
-					'key'   => '_booking_product_id',
-					'value' => $product_id,
-					'compare' => 'IN'
-				),
 				array(
 					'key'     => '_booking_start',
 					'value'   => esc_sql( date( 'YmdHis', strtotime( $query_start_date ) ) ),
@@ -109,9 +107,10 @@ if ( ! empty( $product_id ) && empty( $bookings ) ) {
 
 		<?php
 		// If debug mode is enabled then print the search query.
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && ! empty( $args ) ) {
+		if ( $debug_mode == 'yes' && ! empty( $args ) ) {
 			echo __( 'Debug query', 'woocommerce-print-bookings' ) . ': ';
 			print_r($args);
+			echo '<br>' . __( 'Bookings Found', 'woocommerce-print-bookings' ) . ': ' . count( $bookings );
 		}
 
 		$this->show_errors();
@@ -169,7 +168,7 @@ if ( ! empty( $product_id ) && empty( $bookings ) ) {
 	</div>
 
 	<div style="overflow-x:auto;">
-		<?php $style = defined( 'WP_DEBUG' ) && WP_DEBUG ? ' style="margin-top: 12em !important;"' : ''; ?>
+		<?php $style = $debug_mode == 'yes' ? ' style="margin-top: 14em !important;"' : ''; ?>
 		<table id="print-bookings-table"<?php echo $style; ?>>
 			<tbody>
 				<tr valign="top">
@@ -177,7 +176,7 @@ if ( ! empty( $product_id ) && empty( $bookings ) ) {
 					$table_columns = apply_filters( 'woocommerce_print_bookings_column', array(
 						'booking_date'   => __( 'Booking Date and Time', 'woocommerce-print-bookings' ),
 						'customers_name' => __( 'Customers Name', 'woocommerce-print-bookings' ),
-						'order'          => '#' . __( 'Order', 'woocommerce-print-bookings' ),
+						'order'          => __( 'Order', 'woocommerce-print-bookings' ),
 						'order_items'    => __( 'Order Items and Meta', 'woocommerce-print-bookings' ),
 						'order_notes'    => __( 'Order Notes', 'woocommerce-print-bookings' )
 					) );
@@ -198,19 +197,26 @@ if ( ! empty( $product_id ) && empty( $bookings ) ) {
 				foreach ( $bookings as $booking ) {
 					$booking = new WC_Booking( $booking->ID );
 
+					// Skips any bookings with the status "was-in-cart or in-cart".
+					if ( $booking->has_status( array( 'was-in-cart', 'in-cart' ) ) ) {
+						continue;
+					}
+
 					// Order assigned to the booking.
 					$order = $booking->get_order();
 
 					// Customers details on the Booking.
 					$customer = $booking->get_customer();
 
+					$display_customer = '';
+
 					if ( ! empty( $customer->email ) && ! empty( $customer->name ) ) {
 						$display_customer = '<a href="mailto:' . esc_attr( $customer->email ) . '">' . esc_html( $customer->name ) . '</a>';
-					} else {
+					} else if ( ! empty( $customer->name ) ) {
 						$display_customer = esc_html( $customer->name );
 					}
 
-					if ( isset( $show_order_notes ) && $show_order_notes ) {
+					if ( ! empty( $order ) && isset( $show_order_notes ) && $show_order_notes ) {
 						$notes = wc_get_order_notes( array(
 							'order_id' => $order->get_id(),
 							'type'     => 'customer'
@@ -262,40 +268,55 @@ if ( ! empty( $product_id ) && empty( $bookings ) ) {
 								}
 
 								echo "<br>" . __( 'Booking Status', 'woocommerce-print-bookings' ) . ": <strong>" . esc_html( wc_bookings_get_status_label( $booking->get_status() ) ) . "</strong>";
+								if ( $debug_mode == 'yes' ) echo "<br>" . __( 'Booking ID', 'woocommerce-print-bookings' ) . ": <strong>#" . esc_html( $booking->get_id() ) . "</strong>";
 							break;
 
 							case 'customers_name':
 								echo '<td class="' . $key . '">';
-								echo $display_customer;
+
+									if ( ! empty( $display_customer ) ) echo $display_customer;
+
 							break;
 
 							case 'order':
 								echo '<td class="' . $key . '">';
 
-								$order_date = $order->get_date_created() ? $order->get_date_created()->date( 'Y-m-d H:i:s' ) : '';
+								if ( ! empty( $order ) ) {
+									$order_date = $order->get_date_created() ? $order->get_date_created()->date( 'Y-m-d H:i:s' ) : '';
 
-								echo '<a href="' . admin_url( 'post.php?post=' . absint( ( is_callable( array( $order, 'get_id' ) ) ? $order->get_id() : $order->id ) ) . '&action=edit' ) . '">#' . esc_html( $order->get_order_number() ) . '</a> - ' . esc_html( wc_get_order_status_name( $order->get_status() ) ) .
-								'<br>' . __( 'Order Date', 'woocommerce-print-bookings' ) . ': <strong>' . sprintf( '<time datetime="%s">%s</time>', date_i18n( 'c', strtotime( $order_date ) ), date_i18n( wc_date_format(), strtotime( $order_date ) ) ) . '</strong>';
+									echo '<a href="' . admin_url( 'post.php?post=' . absint( ( is_callable( array( $order, 'get_id' ) ) ? $order->get_id() : $order->id ) ) . '&action=edit' ) . '">#' . esc_html( $order->get_order_number() ) . '</a> - ' . esc_html( wc_get_order_status_name( $order->get_status() ) ) .
+									'<br>' . __( 'Order Date', 'woocommerce-print-bookings' ) . ': <strong>' . sprintf( '<time datetime="%s">%s</time>', date_i18n( 'c', strtotime( $order_date ) ), date_i18n( wc_date_format(), strtotime( $order_date ) ) ) . '</strong>';
+								}
+								else {
+									echo __( 'No order assigned to booking!', 'woocommerce-print-bookings' );
+								}
 
 							break;
 
 							case 'order_items':
 								echo '<td class="' . $key . '">';
 
-								$items = $order->get_items();
+								if ( ! empty( $order ) ) {
 
-								if ( sizeof( $items ) > 0 ) {
-									foreach ( $items as $item ) {
-										echo wc_display_item_meta( $item );
+									$items = $order->get_items();
+
+									if ( sizeof( $items ) > 0 ) {
+										foreach ( $items as $item ) {
+											echo wc_display_item_meta( $item );
+										}
 									}
+
 								}
+
 							break;
 
 							case 'order_notes':
-								if ( isset( $show_order_notes ) && $show_order_notes ) {
-									echo '<td class="' . $key . '">';
+								echo '<td class="' . $key . '">';
+
+								if ( ! empty( $order ) && isset( $show_order_notes ) && $show_order_notes ) {
 									echo $display_notes;
 								}
+
 							break;
 
 							default:
