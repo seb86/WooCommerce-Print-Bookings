@@ -11,16 +11,12 @@ if ( ! empty( $product_id ) ) {
 		'offset'         => 0,
 		'nopaging'       => true,
 		'post_parent'    => 0,
-		'orderby'        => 'post_date',
-		'order'          => 'DESC',
 		'meta_key'       => '_booking_product_id',
 		'meta_value'     => $product_id,
 	);
 
 	// Filter the booking status
 	if ( ! empty( $post_status ) ) {
-		$post_status = implode( ", ", wc_clean( $post_status ) );
-
 		$post_status_arg = array(
 			'post_status' => $post_status
 		);
@@ -57,12 +53,14 @@ if ( ! empty( $product_id ) ) {
 		$booking_date_args = array(
 			'meta_query' => array(
 				'relation' => 'AND',
-				array(
+				'_booking_start' => array(
 					'key'     => '_booking_start',
 					'value'   => esc_sql( date( 'YmdHis', strtotime( $query_start_date ) ) ),
 					'compare' => '>=',
-					'orderby' => 'meta_value_num'
 				)
+			),
+			'orderby' => array(
+				'_booking_start' => 'ASC'
 			)
 		);
 	}
@@ -70,17 +68,20 @@ if ( ! empty( $product_id ) ) {
 		$booking_date_args = array(
 			'meta_query' => array(
 				'relation' => 'AND',
-				array(
+				'_booking_start' => array(
 					'key'     => '_booking_start',
 					'value'   => esc_sql( date( 'YmdHis', strtotime( $query_start_date ) ) ),
 					'compare' => '>=',
-					'orderby' => 'meta_value_num'
 				),
-				array(
+				'_booking_end' => array(
 					'key'     => '_booking_end',
 					'value'   => esc_sql( date( 'YmdHis', strtotime( $query_end_date ) ) ),
 					'compare' => '<=',
 				)
+			),
+			'orderby' => array(
+				'_booking_start' => 'ASC',
+				'_booking_end'   => 'DESC'
 			)
 		);
 	}
