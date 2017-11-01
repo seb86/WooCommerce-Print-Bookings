@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: WooCommerce Print Bookings
- * Description: Select bookable products, booking status, product categories and the date and time of the bookings you wish to print out a summarized version in a printable table.
+ * Description: Select bookable products, booking statuses, product categories and the date and time of the bookings you wish to print out a summarized version in a printable table.
  * Version:     1.0.0
  * Author:      Sébastien Dumont
  * Author URI:  https://sebastiendumont.com
@@ -9,9 +9,9 @@
  * Domain Path: /languages/
  *
  * Requires at least: 4.5
- * Tested up to: 4.8.2
+ * Tested up to: 4.8.3
  * WC requires at least: 2.6.14
- * WC tested up to: 3.2.1
+ * WC tested up to: 3.2.2
  *
  * Copyright:   © 2017 Sébastien Dumont
  * License:     GNU General Public License v2.0+
