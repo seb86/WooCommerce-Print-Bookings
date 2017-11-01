@@ -25,9 +25,9 @@ wp_enqueue_script( 'jquery-ui-datepicker' );
 					</th>
 					<td>
 						<p class="form-field form-field-wide">
-							<?php echo wc_help_tip( __( 'Search & Select the bookable products to return bookings for.', 'woocommerce-print-bookings' ) ); ?>
 							<select id="product_id" class="wc-product-search" name="product_id[]" multiple="multiple" style="width: 400px;" data-sortable="sortable" data-placeholder="<?php esc_attr_e( 'Search & Select the bookable products to return bookings for.', 'woocommerce-print-bookings' ); ?>" data-action="woocommerce_json_search_products_and_variations">
 							</select>
+							<?php echo wc_help_tip( __( 'Search & Select the bookable products to return bookings for.', 'woocommerce-print-bookings' ) ); ?>
 						</p>
 					</td>
 				</tr>
@@ -48,16 +48,18 @@ wp_enqueue_script( 'jquery-ui-datepicker' );
 					if ( class_exists( 'WC_Deposits' ) ) {
 						$statuses['partial-payment'] = __( 'Partially Paid', 'woocommerce-print-bookings' );
 					}
+
+					ksort( $statuses );
 					?>
 					<p class="form-field form-field-wide">
-						<?php echo wc_help_tip( __( 'Filters the booking results by the booking status.', 'woocommerce-print-bookings' ) ); ?>
-						<select id="post_status" name="post_status" class="wc-enhanced-select" multiple="multiple" style="width:400px;">
+						<select id="post_status" class="wc-enhanced-select" name="post_status[]" multiple="multiple" style="width:400px;">
 						<?php
 						foreach ( $statuses as $key => $status ) {
 							echo '<option value="' . $key . '">' . esc_html( $status ) . '</option>';
 						}
 						?>
 						</select>
+						<?php echo wc_help_tip( __( 'Filters the booking results by the booking status.', 'woocommerce-print-bookings' ) ); ?>
 					</p>
 				</td>
 			</tr>
@@ -75,7 +77,6 @@ wp_enqueue_script( 'jquery-ui-datepicker' );
 						) );
 						?>
 						<p class="form-field form-field-wide">
-							<?php echo wc_help_tip( __( 'Filters the booking results by the product category associated.', 'woocommerce-print-bookings' ) ); ?>
 							<select id="product_category" name="product_category" class="wc-enhanced-select" multiple="multiple" style="width:400px;">
 							<?php
 							foreach ( $categories as $category ) {
@@ -83,6 +84,7 @@ wp_enqueue_script( 'jquery-ui-datepicker' );
 							}
 							?>
 							</select>
+							<?php echo wc_help_tip( __( 'Filters the booking results by the product category associated.', 'woocommerce-print-bookings' ) ); ?>
 						</p>
 					</td>
 				</tr>
