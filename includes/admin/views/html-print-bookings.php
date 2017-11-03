@@ -9,8 +9,7 @@ if ( ! empty( $product_id ) ) {
 		'post_status'    => get_wc_booking_statuses(),
 		'posts_per_page' => -1,
 		'offset'         => 0,
-		'nopaging'       => true,
-		'post_parent'    => 0,
+		'post_parent'    => null,
 		'meta_key'       => '_booking_product_id',
 		'meta_value'     => $product_id,
 	);
