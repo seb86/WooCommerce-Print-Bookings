@@ -34,6 +34,7 @@ array(
 	'order'          => __( 'Order', 'woocommerce-print-bookings' ),
 	'order_items'    => __( 'Order Items and Meta', 'woocommerce-print-bookings' ),
 	'order_notes'    => __( 'Order Notes', 'woocommerce-print-bookings' )
-)`
+)
+```
 
 **Filter:** `woocommerce_print_bookings_column`
