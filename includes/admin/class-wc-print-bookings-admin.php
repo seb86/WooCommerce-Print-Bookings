@@ -99,15 +99,14 @@ if ( ! class_exists( 'WC_Print_Bookings_Admin' ) ) {
 			$screen    = get_current_screen();
 			$screen_id = $screen ? $screen->id : '';
 
-			if ( in_array( $screen_id, array( 'wc_booking_page_print-bookings' ) ) ) {
-				wp_register_style( 'jquery-ui-style', '//code.jquery.com/ui/' . $jquery_version . '/themes/smoothness/jquery-ui.min.css', array(), $jquery_version );
-				wp_enqueue_style( 'jquery-ui-style' );
-				wp_enqueue_style( 'wc_print_bookings_style', WC_Print_Bookings::plugin_url() . '/assets/css/wc-print-bookings.css', null, WC_Print_Bookings::$version );
-				wp_register_script( 'wc_print_bookings_js', WC_Print_Bookings::plugin_url() . '/assets/js/wc-print-bookings' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'jquery-tiptip' ), WC_Print_Bookings::$version, true );
-				wp_enqueue_script( 'wc_print_bookings_js' );
+			wp_register_style( 'jquery-ui-style', '//code.jquery.com/ui/' . $jquery_version . '/themes/smoothness/jquery-ui.min.css', array(), $jquery_version );
 
-				wp_register_script( 'jquery-print', WC_Print_Bookings::plugin_url() . '/assets/js/jQuery.print.min.js', array( 'jquery' ), WC_Print_Bookings::$version, true );
-				wp_enqueue_script( 'jquery-print' );
+			wp_register_script( 'wc_print_bookings_js', WC_Print_Bookings::plugin_url() . '/assets/js/wc-print-bookings' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'jquery-tiptip' ), WC_Print_Bookings::$version, true );
+
+			wp_register_script( 'jquery-print', WC_Print_Bookings::plugin_url() . '/assets/js/jQuery.print.min.js', array( 'jquery' ), WC_Print_Bookings::$version, true );
+
+			if ( in_array( $screen_id, array( 'edit-wc_booking', 'wc_booking_page_print-bookings' ) ) ) {
+				wp_enqueue_script( 'wc_print_bookings_js' );
 
 				$params = array(
 					'i18n_print_bookings' => esc_js( __( 'Print Bookings', 'woocommerce-print-bookings' ) ),
@@ -118,6 +117,12 @@ if ( ! class_exists( 'WC_Print_Bookings_Admin' ) ) {
 				);
 
 				wp_localize_script( 'wc_print_bookings_js', 'wc_print_bookings_js_params', $params );
+			}
+
+			if ( in_array( $screen_id, array( 'wc_booking_page_print-bookings' ) ) ) {
+				wp_enqueue_style( 'jquery-ui-style' );
+				wp_enqueue_style( 'wc_print_bookings_style', WC_Print_Bookings::plugin_url() . '/assets/css/wc-print-bookings.css', null, WC_Print_Bookings::$version );
+				wp_enqueue_script( 'jquery-print' );
 			}
 		} // END styles_and_scripts()
 
