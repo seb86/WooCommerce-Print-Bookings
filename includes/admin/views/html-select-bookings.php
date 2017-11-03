@@ -152,7 +152,7 @@ wp_enqueue_script( 'jquery-ui-datepicker' );
 					</td>
 				</tr>
 
-				<?php do_action( 'woocommerce_print_bookings_before_print_button' ); ?>
+				<?php do_action( 'woocommerce_print_bookings_before_get_bookings_button' ); ?>
 				<tr valign="top">
 					<th scope="row">&nbsp;</th>
 					<td>
