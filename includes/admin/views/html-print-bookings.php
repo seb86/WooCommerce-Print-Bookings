@@ -118,12 +118,8 @@ if ( ! empty( $product_id ) && empty( $bookings ) ) {
 
 		$this->show_errors();
 
-		if ( ! empty( $product_id ) && empty( $bookings ) ) {
-			exit();
-		}
-
-		// Prevent the page from loading any further if the page was refreshed.
-		if ( $step == 2 && empty( $product_id ) ) {
+		// Prevent the page from loading any further if the page was refreshed or errors exist.
+		if ( $step == 2 && empty( $product_id ) || ! empty( $this->errors ) ) {
 			exit();
 		}
 		?>

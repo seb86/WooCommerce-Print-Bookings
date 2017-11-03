@@ -66,8 +66,6 @@ if ( ! class_exists( 'WC_Print_Bookings_Page' ) ) {
 
 				if ( $step == 2 && empty( $product_id ) ) {
 					throw new Exception( __( 'Error - Oh dear, you refreshed the page. Please <a href="javascript:history.back()">go back</a> and re-select the bookings to print.', 'woocommerce-print-bookings' ) );
-					wp_die();
-					exit(1);
 				}
 
 			} catch ( Exception $e ) {
