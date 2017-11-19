@@ -12,7 +12,7 @@ wp_enqueue_script( 'jquery-ui-datepicker' );
 <div class="wrap woocommerce-print-bookings">
 	<h2><?php _e( 'Print Bookings', 'woocommerce-print-bookings' ); ?></h2>
 
-	<p><?php _e( 'Select a bookable product, product category and the date and time of the bookings you wish to get results for and press the "Get Bookings" button.', 'woocommerce-print-bookings' ); ?></p>
+	<p><?php _e( 'Use the fields below to query the bookings to return. When ready, press the "Get Bookings" button.', 'woocommerce-print-bookings' ); ?></p>
 
 	<?php $this->show_errors(); ?>
 
@@ -25,9 +25,9 @@ wp_enqueue_script( 'jquery-ui-datepicker' );
 					</th>
 					<td>
 						<p class="form-field form-field-wide">
-							<select id="product_id" class="wc-product-search" name="product_id[]" multiple="multiple" style="width: 400px;" data-sortable="sortable" data-placeholder="<?php esc_attr_e( 'Search & Select the bookable products to return bookings for.', 'woocommerce-print-bookings' ); ?>" data-action="woocommerce_json_search_products_and_variations">
+							<select id="product_id" class="wc-product-search" name="product_id[]" multiple="multiple" style="width: 440px;" data-placeholder="<?php esc_attr_e( 'Search & Select the bookable products to return bookings for.', 'woocommerce-print-bookings' ); ?>" data-action="woocommerce_json_search_products_and_variations">
 							</select>
-							<?php echo wc_help_tip( __( 'Search & Select the bookable products to return bookings for.', 'woocommerce-print-bookings' ) ); ?>
+							<?php echo wc_help_tip( __( 'Select as many bookable products as you like.', 'woocommerce-print-bookings' ) ); ?>
 						</p>
 					</td>
 				</tr>
@@ -52,7 +52,7 @@ wp_enqueue_script( 'jquery-ui-datepicker' );
 					ksort( $statuses );
 					?>
 					<p class="form-field form-field-wide">
-						<select id="post_status" class="wc-enhanced-select" name="post_status[]" multiple="multiple" style="width:400px;">
+						<select id="post_status" class="wc-enhanced-select" name="post_status[]" multiple="multiple" style="width:440px;" data-placeholder="<?php esc_attr_e( 'Leave blank for all or select the booking statues you want.', 'woocommerce-print-bookings' ); ?>">
 						<?php
 						foreach ( $statuses as $key => $status ) {
 							echo '<option value="' . $key . '">' . esc_html( $status ) . '</option>';
@@ -77,7 +77,7 @@ wp_enqueue_script( 'jquery-ui-datepicker' );
 						) );
 						?>
 						<p class="form-field form-field-wide">
-							<select id="product_category" name="product_category" class="wc-enhanced-select" multiple="multiple" style="width:400px;">
+							<select id="product_category" name="product_category" class="wc-enhanced-select" multiple="multiple" style="width:440px;" data-placeholder="<?php esc_attr_e( 'Filter by product categories.', 'woocommerce-print-bookings' ); ?>">
 							<?php
 							foreach ( $categories as $category ) {
 								echo '<option value="' . $category->term_id . '">' . esc_html( $category->cat_name ) . ' (' . esc_html( $category->category_count ) . ')</option>';
