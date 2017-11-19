@@ -9,9 +9,9 @@
  * Domain Path: /languages/
  *
  * Requires at least: 4.5
- * Tested up to: 4.8.3
+ * Tested up to: 4.9
  * WC requires at least: 3.0.0
- * WC tested up to: 3.2.3
+ * WC tested up to: 3.2.4
  *
  * Copyright:   © 2017 Sébastien Dumont
  * License:     GNU General Public License v2.0+
