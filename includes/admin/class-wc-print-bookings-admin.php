@@ -53,7 +53,7 @@ if ( ! class_exists( 'WC_Print_Bookings_Admin' ) ) {
 		 */
 		public function plugin_meta_links( $links, $file, $data, $status ) {
 			if ( $file == WC_Print_Bookings::plugin_basename() ) {
-				$links[ 1 ] = sprintf( __( 'Developed By %s', 'wc-print-bookings' ), '<a href="' . $data[ 'AuthorURI' ] . '">' . $data[ 'Author' ] . '</a>' );
+				$links[ 1 ] = sprintf( __( 'Developed By %s', 'woocommerce-print-bookings' ), '<a href="' . $data[ 'AuthorURI' ] . '">' . $data[ 'Author' ] . '</a>' );
 			}
 
 			return $links;
